@@ -1,0 +1,18 @@
+# React-Final
+React-Final Project with Alex, Amrit and Mark 
+
+Team Name: Marksmen   
+
+App Name: []  
+
+
+3 Features:  
+
+-Login system with accounts 
+
+-Score board with recorded scores 
+
+-Avatar selection (4-7) with associated sprites
+
+
+Documentation:
