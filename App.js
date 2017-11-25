@@ -1,14 +1,34 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+
+import LoginScreenComponent from './components/LoginScreenComponent';
+import MenuScreenComponent from './components/MenuScreenComponent'
+import ProfileScreenComponent from './components/ProfileScreenComponent'
+import GameScreenComponent from './components/GameScreenComponent'
+
+const SimpleApp = StackNavigator({
+  Login : {
+    screen : LoginScreenComponent
+  },
+
+  Menu: {
+    screen: MenuScreenComponent 
+  },
+
+  Profile: {
+    screen: ProfileScreenComponent
+  },
+
+  Game: {
+    screen: GameScreenComponent
+  }
+});
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      <SimpleApp/> 
     );
   }
 }

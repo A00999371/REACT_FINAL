@@ -15,4 +15,6 @@ App Name: []
 -Avatar selection (4-7) with associated sprites
 
 
-Documentation:
+Documentation (installed so far):
+
+npm install --save react-navigation
