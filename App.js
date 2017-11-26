@@ -6,6 +6,7 @@ import LoginScreenComponent from './components/LoginScreenComponent';
 import MenuScreenComponent from './components/MenuScreenComponent'
 import ProfileScreenComponent from './components/ProfileScreenComponent'
 import GameScreenComponent from './components/GameScreenComponent'
+import ScoreScreenComponent from './components/ScoreScreenComponent'
 
 const SimpleApp = StackNavigator({
   Login : {
@@ -22,6 +23,10 @@ const SimpleApp = StackNavigator({
 
   Game: {
     screen: GameScreenComponent
+  },
+
+  Score: {
+    screen: ScoreScreenComponent
   }
 });
 
