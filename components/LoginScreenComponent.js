@@ -20,7 +20,7 @@ export default class HomeScreenComponent extends Component {
             <View>
                 <Text>By: MARKSMEN Gmaes</Text>
                 <Button
-                    //TODO Place in an if statement for if the entered data matches login data then goes to Main Menu
+                    //TODO Place in an if statement for if the entered data matches login data from file then goes to Main Menu
                     onPress={() => navigate('Menu')}
                     title="Login"
                 />

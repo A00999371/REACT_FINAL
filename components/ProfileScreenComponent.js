@@ -8,7 +8,8 @@ export default class ProfileScreenComponent extends Component {
         title: 'Back to Main Menu',
     };
 
-    //TODO add in multiple avatars and maybe profile options to pick from which will update the pofile
+    //TODO add in multiple avatars, with associated sprite 
+    //TODO buttons and functions to update the local file and pofile tab
     render() {
         return (
             <View>

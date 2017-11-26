@@ -7,6 +7,8 @@ export default class MenuScreenComponent extends Component {
     static navigationOptions = {
         title: 'Back to Login',
     };
+
+    //TODO updateable pofile tab from file info
     render() {
     	const {navigate} = this.props.navigation;
         return (
