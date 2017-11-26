@@ -26,6 +26,10 @@ export default class MenuScreenComponent extends Component {
 	            onPress={() => navigate('Game')}
 	            title="Play Game: Mind Games"
 	            />
+	            <Button
+	            onPress={() => navigate('Score')}
+	            title="View Highscores"
+	            />
             	<Button
 	            onPress={() => navigate('Profile')}
 	            title="Profile/Avatar Selection"
