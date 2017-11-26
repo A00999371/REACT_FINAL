@@ -22,6 +22,9 @@ export default class ProfileScreenComponent extends Component {
             			source={require('../img/profile.png')}
         			/>
             	</View>
+            	<View>
+            		<Text>AVATAR IMAGES</Text>
+            	</View>
             </View>
         );
     }
