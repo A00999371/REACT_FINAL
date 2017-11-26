@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Button, Image } from 'react-native';
 
 export default class MenuScreenComponent extends Component {
 
@@ -12,6 +12,14 @@ export default class MenuScreenComponent extends Component {
         return (
             <View>
             	<Text>MAIN MENU</Text>
+            	<View>
+            		<Text>Profile Name: Player 1</Text>
+            		<Text>Highscore: 0 points</Text>
+            		<Image
+            			style={{width: 50, height: 50}}
+            			source={require('../img/profile.png')}
+        			/>
+            	</View>
             	<Button
 	            onPress={() => navigate('Game')}
 	            title="Play Game: Mind Games"

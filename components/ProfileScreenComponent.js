@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Button, Image } from 'react-native';
 
 export default class ProfileScreenComponent extends Component {
 
@@ -13,6 +13,14 @@ export default class ProfileScreenComponent extends Component {
         return (
             <View>
             	<Text>Edit Profile & Avatar Selection</Text>
+            	<View>
+            		<Text>Profile Name: Player 1</Text>
+            		<Text>Highscore: 0 points</Text>
+            		<Image
+            			style={{width: 50, height: 50}}
+            			source={require('../img/profile.png')}
+        			/>
+            	</View>
             </View>
         );
     }
