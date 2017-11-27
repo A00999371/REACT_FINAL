@@ -17,4 +17,8 @@ App Name: []
 
 Documentation (installed so far):
 
-npm install --save react-navigation
+$ npm install --save react-navigation
+
+$ npm install --save react-native-animated-sprite
+
+$ npm install lodash.sample
