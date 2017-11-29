@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, Image } from 'react-native';
+import { Text, View, Button, Image, AsyncStorage } from 'react-native';
 
 export default class MenuScreenComponent extends Component {
 
@@ -8,10 +8,39 @@ export default class MenuScreenComponent extends Component {
         super();
         this.state = {
           profileImage: require('../img/profile.png'),
-          profileScore: 0,
-          profileName: "Player 1",
+          profileScore: "",
+          profileName: "",
         };
-     }
+	 }
+	 
+	componentDidMount() {
+		this.getProfile();
+		this.getHighscore();
+		// this.getAvatar();
+	}
+
+	async getProfile() {
+		var profile = await AsyncStorage.getItem('Profile');
+		this.setState({
+			profileName: profile
+		});
+	}
+
+	async getHighscore() {
+		var score = await AsyncStorage.getItem('Highscore');
+		this.setState({
+			profileScore: score
+		});
+	}
+
+	//TODO figure out how to make require work dynamically
+	//Or hardcode all values and match with what the AsyncStorage item is
+	async getAvatar() {
+		var img = await AsyncStorage.getItem('Avatar');
+		this.setState({
+			profileImage: img
+		});
+	}
 
     static navigationOptions = {
         title: 'Back to Login',
