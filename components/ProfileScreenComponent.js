@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, Image, StyleSheet, Props } from 'react-native';
+import { Text, View, Button, Image, StyleSheet, Props, TouchableHighlight, Alert } from 'react-native';
 
 import sample from 'lodash.sample';
 import AnimatedSprite from 'react-native-animated-sprite';
 
-import ninjaSprite from '../sprites/ninja/ninjaSprite';
-import walkRightSprite from '../sprites/walkRight/walkRightSprite';
+//import ninjaSprite from '../sprites/ninja/ninjaSprite';
+//import walkRightSprite from '../sprites/walkRight/walkRightSprite';
 import ironManSprite from '../sprites/ironman/ironManSprite';
 import hulkSprite from '../sprites/hulk/hulkSprite';
+import rickSprite from '../sprites/rick/rickSprite';
+import mortySprite from '../sprites/morty/mortySprite';
 
 export default class ProfileScreenComponent extends Component {
 
@@ -16,30 +18,56 @@ export default class ProfileScreenComponent extends Component {
 	    super();
 	    this.state = {
 	      animationType: 'ALL',
+	      profileImage: require('../img/profile.png'),
+	      profileScore: 0,
+	      profileName: "Player 1",
 	    };
 	 }
+
+	changeLogo(newImage) {
+	    this.setState({
+	    	profileImage: newImage
+	    });
+    }
+
+    btnPress() {
+    	Alert.alert(
+		  'Congratulations!',
+		  'Image Saved to Profile',
+		  [
+		    {text: 'OK', onPress: () => console.log('OK Pressed')},
+		  ],
+		  { cancelable: false }
+		)
+    }
 
     static navigationOptions = {
         title: 'Back to Main Menu',
     };
- 
+
     //TODO buttons and functions to update the local file and pofile tab with the selected avatar
     render() {
         return (
             <View>
             	<Text>Edit Profile & Avatar Selection</Text>
             	<View>
-            		<Text>Profile Name: Player 1</Text>
-            		<Text>Highscore: 0 points</Text>
+            		<Text>Profile Name: {this.state.profileName}</Text>
+            		<Text>Highscore: {this.state.profileScore} points</Text>
             		<Image
-            			style={{width: 50, height: 50}}
-            			source={require('../img/profile.png')}
+            			style={{width: 80, height: 80}}
+            			source={this.state.profileImage}
         			/>
             	</View>
+            	<Button
+            		//TODO add onPress function that takes the selected image and saves it into profile data so it shows up in the menu screen
+		            title="Save Selected Image To Profile"
+		            onPress={()=> this.btnPress()} 
+	            />
             	<View>
             		<Text>AVATAR IMAGES</Text>
             	</View>
-            	<Image
+            	{/*Having more than 4 sprites causes loading issues*/}
+            	{/*<Image
         			style={{width: 60, height: 60, top: 500, left:10}}
         			source={require('../img/guy.png')}
         			position= 'absolute'
@@ -57,10 +85,10 @@ export default class ProfileScreenComponent extends Component {
 			            width: walkRightSprite.size.width * 0.4,
 			            height: walkRightSprite.size.height * 0.4,
 			        }}
-			        fps={8}
-			        onPress={() => {this.onPress();}}
-			    />
-			    <Image
+			        fps={5}
+			        //onPress={() => {this.onPress();}}
+			    />*/}
+			    {/*<Image
         			style={{width: 60, height: 60, top: 420, left:10}}
         			source={require('../img/ninja1.png')}
         			position= 'absolute'
@@ -79,49 +107,102 @@ export default class ProfileScreenComponent extends Component {
 		            	height: ninjaSprite.size.height * 0.3,
 		        	}}
 		        	fps={8}
-		        	onPress={() => {this.onPress();}}
-		        />
-		        <Image
-        			style={{width: 65, height: 65, top: 500, left:190}}
-        			source={require('../img/ironman1.png')}
-        			position= 'absolute'
-    			/>
+		        	//onPress={() => {this.onPress();}}
+		        />*/}
+		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/ironman1.png'))} position='absolute' style={{top: 10, left:10}}>
+					<Image
+				    	style={{width: 80, height: 80}}
+	        			source={require('../img/ironman1.png')}
+					/>
+				</TouchableHighlight>
 		        <AnimatedSprite
 		        	ref={'ironManRef'}
 		        	sprite={ironManSprite}
 		        	animationFrameIndex={ironManSprite.animationIndex(this.state.animationType)}
 		        	loopAnimation={true}
 		        	coordinates={{
-		            	top: 470,
-		            	left: 250,
+		            	top: 180,
+		            	left: 90,
 		        	}}
+		        	position= 'absolute'
 		        	size={{
 		            	width: ironManSprite.size.width * 0.3,
 		            	height: ironManSprite.size.height * 0.3,
 		        	}}
-		        	fps={4}
-		        	onPress={() => {this.onPress();}}
+		        	fps={3}
+		        	//onPress={() => {this.onPress();}}
 		        />
-		        <Image
-        			style={{width: 65, height: 65, top: 420, left:190}}
-        			source={require('../img/hulk1.png')}
-        			position= 'absolute'
-    			/>
+		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/hulk1.png'))} position='absolute' style={{top: 20, left:10}}>
+					<Image
+				    	style={{width: 80, height: 80}}
+	        			source={require('../img/hulk1.png')}
+	        			//position= 'absolute'
+					/>
+				</TouchableHighlight>
 		        <AnimatedSprite
 		        	ref={'hulkRef'}
 		        	sprite={hulkSprite}
 		        	animationFrameIndex={hulkSprite.animationIndex(this.state.animationType)}
 		        	loopAnimation={true}
 		        	coordinates={{
-		            	top: 400,
-		            	left: 260,
+		            	top: 290,
+		            	left: 100,
 		        	}}
+		        	position= 'absolute'
 		        	size={{
 		            	width: hulkSprite.size.width * 0.235,
 		            	height: hulkSprite.size.height * 0.235,
 		        	}}
 		        	fps={3}
-		        	onPress={() => {this.onPress();}}
+		        	//onPress={() => {this.onPress();}}
+		        />
+		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/rick1.png'))} position='absolute' style={{top: 20, left:10}}>
+					<Image
+				    	style={{width: 69, height: 80}}
+	        			source={require('../img/rick1.png')}
+	        			//position= 'absolute'
+					/>
+				</TouchableHighlight>
+		        <AnimatedSprite
+		        	ref={'rickRef'}
+		        	sprite={rickSprite}
+		        	animationFrameIndex={rickSprite.animationIndex(this.state.animationType)}
+		        	loopAnimation={true}
+		        	coordinates={{
+		            	top: 380,
+		            	left: 120,
+		        	}}
+		        	position= 'absolute'
+		        	size={{
+		            	width: rickSprite.size.width * 0.4,
+		            	height: rickSprite.size.height * 0.4,
+		        	}}
+		        	fps={5}
+		        	//onPress={() => {this.onPress();}}
+		        />
+		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/morty1.png'))} position= 'absolute' style={{top: 30, left:20}}>
+					<Image
+				    	style={{width: 52, height: 80}}
+	        			source={require('../img/morty1.png')}
+	        			//position= 'absolute'
+					/>
+				</TouchableHighlight>
+		        <AnimatedSprite
+		        	ref={'mortyRef'}
+		        	sprite={mortySprite}
+		        	animationFrameIndex={mortySprite.animationIndex(this.state.animationType)}
+		        	loopAnimation={true}
+		        	coordinates={{
+		            	top: 460,
+		            	left: 120,
+		        	}}
+		        	position= 'absolute'
+		        	size={{
+		            	width: mortySprite.size.width * 0.4,
+		            	height: mortySprite.size.height * 0.4,
+		        	}}
+		        	fps={5}
+		        	//onPress={() => {this.onPress();}}
 		        />
             </View>
         );

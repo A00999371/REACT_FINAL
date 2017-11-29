@@ -4,6 +4,15 @@ import { Text, View, Button, Image } from 'react-native';
 
 export default class MenuScreenComponent extends Component {
 
+    constructor () {
+        super();
+        this.state = {
+          profileImage: require('../img/profile.png'),
+          profileScore: 0,
+          profileName: "Player 1",
+        };
+     }
+
     static navigationOptions = {
         title: 'Back to Login',
     };
@@ -15,11 +24,11 @@ export default class MenuScreenComponent extends Component {
             <View>
             	<Text>MAIN MENU</Text>
             	<View>
-            		<Text>Profile Name: Player 1</Text>
-            		<Text>Highscore: 0 points</Text>
+            		<Text>Profile Name: {this.state.profileName}</Text>
+            		<Text>Highscore: {this.state.profileScore} points</Text>
             		<Image
-            			style={{width: 50, height: 50}}
-            			source={require('../img/profile.png')}
+            			style={{width: 80, height: 80}}
+            			source={this.state.profileImage}
         			/>
             	</View>
             	<Button
