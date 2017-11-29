@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, Image, StyleSheet, Props, TouchableHighlight, Alert } from 'react-native';
+import { Text, View, Button, Image, StyleSheet, Props, TouchableHighlight, Alert, AsyncStorage } from 'react-native';
 
 import sample from 'lodash.sample';
 import AnimatedSprite from 'react-native-animated-sprite';
@@ -19,10 +19,37 @@ export default class ProfileScreenComponent extends Component {
 	    this.state = {
 	      animationType: 'ALL',
 	      profileImage: require('../img/profile.png'),
-	      profileScore: 0,
-	      profileName: "Player 1",
+	      profileScore: "",
+	      profileName: "",
 	    };
 	 }
+
+	 componentDidMount() {
+		this.getProfile();
+		this.getHighscore();
+		// this.getAvatar();
+	}
+
+	async getProfile() {
+		var profile = await AsyncStorage.getItem('Profile');
+		this.setState({
+			profileName: profile
+		});
+	}
+
+	async getHighscore() {
+		var score = await AsyncStorage.getItem('Highscore');
+		this.setState({
+			profileScore: score
+		});
+	}
+
+	async getAvatar() {
+		var img = await AsyncStorage.getItem('Avatar');
+		this.setState({
+			profileImage: img
+		});
+	}
 
 	changeLogo(newImage) {
 	    this.setState({
@@ -30,7 +57,7 @@ export default class ProfileScreenComponent extends Component {
 	    });
     }
 
-    btnPress() {
+    updateProfileImage() {
     	Alert.alert(
 		  'Congratulations!',
 		  'Image Saved to Profile',
@@ -61,7 +88,7 @@ export default class ProfileScreenComponent extends Component {
             	<Button
             		//TODO add onPress function that takes the selected image and saves it into profile data so it shows up in the menu screen
 		            title="Save Selected Image To Profile"
-		            onPress={()=> this.btnPress()} 
+		            onPress={()=> this.updateProfileImage()} 
 	            />
             	<View>
             		<Text>AVATAR IMAGES</Text>

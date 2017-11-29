@@ -28,6 +28,14 @@ export default class LoginScreenComponent extends Component {
             //Error saving data
             console.log(error.message);
         }
+        Alert.alert(
+            'Congratulations!',
+            'Profile Created',
+            [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+        )
     }
 
     //See if the AsyncStorage profile exists, and if it does, use that as the login profile
@@ -63,7 +71,6 @@ export default class LoginScreenComponent extends Component {
         return (
             <View style={{flex: 1, alignContent: 'center', justifyContent: 'flex-start'}}>
                 <Button
-                    //TODO Place in an if statement for if the entered data matches login data from file then goes to Main Menu
                     onPress={() => this.checkProfile(this.state.text)}
                     title="Login"
                     style={styles.but}
