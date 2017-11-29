@@ -18,7 +18,7 @@ export default class HomeScreenComponent extends Component {
         const {navigate} = this.props.navigation;
         return (
             <View>
-                <Text>By: MARKSMEN Gmaes</Text>
+                <Text>By: MARKSMEN Games</Text>
                 <Button
                     //TODO Place in an if statement for if the entered data matches login data from file then goes to Main Menu
                     onPress={() => navigate('Menu')}
