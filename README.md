@@ -22,3 +22,5 @@ $ npm install --save react-navigation
 $ npm install --save react-native-animated-sprite
 
 $ npm install lodash.sample
+
+$ npm install react-native-elements
