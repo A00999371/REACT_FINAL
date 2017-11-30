@@ -8,13 +8,13 @@ export default class GameScreenComponent extends Component {
     constructor() {
         super();
         this.state = ({
-            currentTime: 3,
+            currentTime: 5,
             currentScore: 0
         });
     }
 
     static navigationOptions = {
-        title: 'Increment',
+        title: 'Quit to Main Menu',
     };
 
     _updateTimer() {
@@ -36,11 +36,15 @@ export default class GameScreenComponent extends Component {
     }
 
     _playAgain() {
-        this.props.navigation.navigate('Game');
+        this.setState({
+            currentTime: 5,
+            currentScore: 0
+        })
+        this.render();
     }
 
     _backToMenu() {
-        this.props.navigation.navigate('Menu');
+        this.props.navigation.goBack();
     }
 
     _showScore() {
