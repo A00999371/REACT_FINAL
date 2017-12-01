@@ -4,6 +4,20 @@ import { View, Text } from 'react-native';
 import MenuScreenComponent from './MenuScreenComponent';
 import ProfileScreenComponent from './ProfileScreenComponent';
 
+var vars = async function() {
+	var profile = await AsyncStorage.getItem('Profile');
+	var avatar = await AsyncStorage.getItem('Avatar');
+	var highscore = await AsyncStorage.getItem('Highscore');	
+}
+
+function getHighscore() {
+	return highscore;
+}
+
+function setHighscore(score) {
+	highscore = score;
+}
+
 // Create a Component
 export default class You extends Component {
    

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, StyleSheet, Alert, AsyncStorage } from 'react-native';
+import { NavigationAction, NavigationActions } from 'react-navigation';
 import { Button } from 'react-native-elements';
+import { Menu } from './MenuScreenComponent';
 
 export default class GameScreenComponent extends Component {
 
@@ -21,7 +23,8 @@ export default class GameScreenComponent extends Component {
         var profile = await AsyncStorage.getItem("Profile");
 		var string = await AsyncStorage.getItem(profile);
 		var split_string = string.split(" ");
-		await AsyncStorage.setItem(profile, score + " " + split_string[1]);
+        await AsyncStorage.setItem(profile, score + " " + split_string[1]);
+        await AsyncStorage.setItem("Highscore", score.toString());
     }
 
     _updateTimer() {
@@ -59,8 +62,15 @@ export default class GameScreenComponent extends Component {
             "Time's Up!",
             message + score,
             [
-              {text: 'Play Again!', onPress: () => this._playAgain()},
-              {text: 'Main Menu', onPress: () => this._backToMenu()},
+                {text: 'Play Again!', onPress: () => this._playAgain()},
+                {text: 'Main Menu', onPress: () => {
+                    const navigateAction = NavigationActions.navigate({
+                        routeName: 'Menu',
+                        params: {}
+                    });
+
+                    this.props.navigation.dispatch(navigateAction);
+                }},
             ],
             { cancelable: false }
         )

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, Image, StyleSheet, Props, TouchableHighlight, Alert, AsyncStorage } from 'react-native';
-
+import { Text, View, Button, Image, StyleSheet, Props, TouchableHighlight, Alert, AsyncStorage, Icon } from 'react-native';
+import { NavigationAction, NavigationActions } from 'react-navigation';
 import sample from 'lodash.sample';
 import AnimatedSprite from 'react-native-animated-sprite';
 
@@ -74,6 +74,7 @@ export default class ProfileScreenComponent extends Component {
 		var split_string = string.split(" ");
 
 		await AsyncStorage.setItem(profile, split_string[0] + " " + value);
+		await AsyncStorage.setItem("Avatar", value);
 	}
 
 	changeLogo(img) {
@@ -101,36 +102,32 @@ export default class ProfileScreenComponent extends Component {
 		});
     }
 
-    updateProfileImage() {
-    	Alert.alert(
-			'Congratulations!',
-			'Image Saved to Profile',
-			[
-			{text: 'OK', onPress: () => console.log('OK Pressed')},
-			],
-			{ cancelable: false }
-		)
-    }
-
     static navigationOptions = {
-    	title: 'Back to Main Menu',
-    };
+		title: 'Back to Main Menu',
+	};
 
     //TODO buttons and functions to update the local file and pofile tab with the selected avatar
     render() {
         return (
             <View>
+				<Button
+					onPress={() => {
+						const navigateAction = NavigationActions.navigate({
+							routeName: 'Menu',
+							params: {}
+						});
+		
+						this.props.navigation.dispatch(navigateAction);
+					}}
+					title="Go back home"
+					style={{position: 'absolute', bottom: 0}}
+				/>
             	<Text>Edit Profile & Avatar Selection</Text>
             	<View>
             		<Text>Profile Name: {this.state.profileName}</Text>
             		<Text>Highscore: {this.state.profileScore} points</Text>
             		{this.state.profileImage}
             	</View>
-            	<Button
-            		//TODO add onPress function that takes the selected image and saves it into profile data so it shows up in the menu screen
-		            title="Save Selected Image To Profile"
-		            onPress={()=> this.updateProfileImage()} 
-	            />
             	<View>
             		<Text>AVATAR IMAGES</Text>
             	</View>

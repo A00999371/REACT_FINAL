@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, Image, AsyncStorage } from 'react-native';
+import { Text, View, Button, Image, AsyncStorage, Keyboard } from 'react-native';
 
 export default class MenuScreenComponent extends Component {
 
@@ -60,13 +60,20 @@ export default class MenuScreenComponent extends Component {
 		});
 	}
 
+	changeHighscore(value) {
+		this.setState({
+			profileScore: value
+		});
+	}
+
     static navigationOptions = {
-        title: 'Back to Login',
-    };
+        tabBarLabel: 'Back to Login',
+	};
 
     //TODO updateable pofile tab from file info
     render() {
 		const {navigate} = this.props.navigation;
+		Keyboard.dismiss();
         return (
             <View>
             	<Text>MAIN MENU</Text>
@@ -87,6 +94,15 @@ export default class MenuScreenComponent extends Component {
 	            onPress={() => navigate('Profile')}
 	            title="Profile/Avatar Selection"
 	            />
+				<Button
+				onPress={async () => {
+					await AsyncStorage.removeItem("Highscore");
+					await AsyncStorage.removeItem("Profile");
+					await AsyncStorage.removeItem("Avatar");
+					navigate('Login')
+				}}
+				title='Logout'
+				/>
             </View>
         );
     }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, Button, AsyncStorage } from 'react-native';
+import { NavigationAction, NavigationActions } from 'react-navigation';
+const sortBy = require('lodash.sortby');
 
 export default class ScoreScreenComponent extends Component {
 
@@ -30,6 +32,7 @@ export default class ScoreScreenComponent extends Component {
     async createHighscoreDict() {
         var allProfiles = await AsyncStorage.getAllKeys();
         var dict = [];
+        console.log("These are allProfiles: " + allProfiles);
 
         for (var i in allProfiles) {
             var profile = allProfiles[i];
@@ -40,18 +43,19 @@ export default class ScoreScreenComponent extends Component {
                 var score = await AsyncStorage.getItem(profile);
                 var score_list = score.split(" ");
                 dict.push({
-                    key: profile,
-                    value: score_list[0]
+                    value: score_list[0],
+                    key: profile
                 });
             }
         }
 
-        this.getHighscores(dict);
+        this._getHighscores(dict);
     }
 
-    async getHighscores(dict) {
+    async _getHighscores(dict) {
         var l = [];
-        for (var i in dict) {
+        dict = sortBy(dict, 'value');
+        for (var i = dict.length-1; i >= 0; i--) {
             var profile = dict[i].key;
             var score = dict[i].value;
             l.push(<View key={profile}><Text>{profile}: {score}</Text></View>);
@@ -69,6 +73,18 @@ export default class ScoreScreenComponent extends Component {
     render() {
         return (
             <View>
+                <Button
+                    onPress={() => {
+                        const navigateAction = NavigationActions.navigate({
+                            routeName: 'Menu',
+                            params: {}
+                        });
+        
+                        this.props.navigation.dispatch(navigateAction);
+                    }}
+                    title="Go back home"
+                    style={{position: 'absolute', bottom: 0}}
+                />
                 <Text>Highscore</Text>
                 <Text style={{marginBottom: 10, marginTop: 10}}>
                 YOU{"\n"}

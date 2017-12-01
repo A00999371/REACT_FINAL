@@ -14,6 +14,17 @@ export default class LoginScreenComponent extends Component {
         this.createProfile = this.createProfile.bind(this);
     }
 
+    async componentDidMount() {
+        if (await AsyncStorage.getItem("Profile") != null) {
+            const navigateAction = NavigationActions.navigate({
+                routeName: 'Menu',
+                params: {}
+            });
+
+            this.props.navigation.dispatch(navigateAction);
+        }
+    }
+
     static navigationOptions = {
         title: 'Mind Games',
     };
@@ -87,6 +98,7 @@ export default class LoginScreenComponent extends Component {
                     onChangeText={(text) => this.setState({text})}
                     value={this.state.text} 
                     placeholder="Enter Profile Name"
+                    onSubmitEditing={() => this.checkProfile(this.state.text)}
                 />
 
                 <Text style={styles.te}>By: MARKSMEN Games</Text>
