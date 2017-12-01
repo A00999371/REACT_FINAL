@@ -17,17 +17,47 @@ export default class ProfileScreenComponent extends Component {
 	constructor () {
 	    super();
 	    this.state = {
-	      animationType: 'ALL',
-	      profileImage: require('../img/profile.png'),
-	      profileScore: "",
-	      profileName: "",
+			images: [
+				{
+					key: "profile",
+					value: require('../img/profile.png')
+				},
+				{
+					key: 'ninja',
+					value: require('../img/ninja1.png')
+				},
+				{
+					key: 'guy',
+					value: require('../img/guy.png')
+				},
+				{
+					key: 'ironman',
+					value: require('../img/ironman1.png')
+				},
+				{
+					key: 'hulk',
+					value: require('../img/hulk1.png')
+				},
+				{
+					key: 'morty',
+					value: require('../img/morty1.png')
+				},
+				{
+					key: 'rick',
+					value: require('../img/rick1.png')
+				}
+			],
+	     	animationType: 'ALL',
+	    	profileImage: require('../img/profile.png'),
+	    	profileScore: "",
+	    	profileName: "",
 	    };
 	 }
 
-	 componentDidMount() {
+	componentDidMount() {
 		this.getProfile();
 		this.getHighscore();
-		// this.getAvatar();
+		this.getAvatar();
 	}
 
 	async getProfile() {
@@ -46,12 +76,33 @@ export default class ProfileScreenComponent extends Component {
 
 	async getAvatar() {
 		var img = await AsyncStorage.getItem('Avatar');
-		this.setState({
-			profileImage: img
-		});
+
+		for (var i in this.state.images) {
+			var object = this.state.images[i];
+			if (object.key == img) {
+				this.setState({
+					profileImage: object.value
+				});
+			} else {
+				continue;
+			}
+		}
+
+		console.log(this.state.profileImage);
+	}
+
+	async setAvatar(value) {
+		var profile = await AsyncStorage.getItem("Profile");
+		var string = await AsyncStorage.getItem(profile);
+		var split_string = string.split(" ");
+
+		await AsyncStorage.setItem(profile, split_string[0] + " " + value);
+		console.log("This is the new avatar: " + await AsyncStorage.getItem(profile));
 	}
 
 	changeLogo(newImage) {
+		this.setAvatar(newImage);
+
 	    this.setState({
 	    	profileImage: newImage
 	    });
@@ -59,17 +110,17 @@ export default class ProfileScreenComponent extends Component {
 
     updateProfileImage() {
     	Alert.alert(
-		  'Congratulations!',
-		  'Image Saved to Profile',
-		  [
-		    {text: 'OK', onPress: () => console.log('OK Pressed')},
-		  ],
-		  { cancelable: false }
+			'Congratulations!',
+			'Image Saved to Profile',
+			[
+			{text: 'OK', onPress: () => console.log('OK Pressed')},
+			],
+			{ cancelable: false }
 		)
     }
 
     static navigationOptions = {
-        title: 'Back to Main Menu',
+    	title: 'Back to Main Menu',
     };
 
     //TODO buttons and functions to update the local file and pofile tab with the selected avatar
@@ -93,7 +144,7 @@ export default class ProfileScreenComponent extends Component {
             	<View>
             		<Text>AVATAR IMAGES</Text>
             	</View>
-            	{/*Having more than 4 sprites causes loading issues*/}
+            	{/* Having more than 4 sprites causes loading issues */}
             	{/*<Image
         			style={{width: 60, height: 60, top: 500, left:10}}
         			source={require('../img/guy.png')}

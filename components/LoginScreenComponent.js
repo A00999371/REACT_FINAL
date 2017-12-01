@@ -22,7 +22,7 @@ export default class LoginScreenComponent extends Component {
     async createProfile(text) {
         try {
             //Create an AsyncStorage item with a default value and key of what the user entered
-            await AsyncStorage.setItem(text, "0 ../img/profile.png");
+            await AsyncStorage.setItem(text, "0 profile");
             console.log("Created profile: " + text);
         } catch (error) {
             //Error saving data
@@ -32,7 +32,7 @@ export default class LoginScreenComponent extends Component {
             'Congratulations!',
             'Profile Created',
             [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'OK'},
             ],
             { cancelable: false }
         )
