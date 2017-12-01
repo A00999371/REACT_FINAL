@@ -8,10 +8,36 @@ export default class MenuScreenComponent extends Component {
         super();
         this.state = {
 			images: [
-				require('../img/profile.png'),
-				require('../img/ninja1.png')
+				{
+					key: "profile",
+					value: require('../img/profile.png')
+				},
+				{
+					key: 'ninja',
+					value: require('../img/ninja1.png')
+				},
+				{
+					key: 'guy',
+					value: '../img/guy.png'
+				},
+				{
+					key: 'ironman',
+					value: require('../img/ironman1.png')
+				},
+				{
+					key: 'hulk',
+					value: require('../img/hulk1.png')
+				},
+				{
+					key: 'morty',
+					value: require('../img/morty1.png')
+				},
+				{
+					key: 'rick',
+					value: require('../img/rick1.png')
+				}
 			],
-        	profileImage: require('../img/profile.png'),
+        	profileImage: "",
         	profileScore: "",
         	profileName: "",
         };
@@ -20,7 +46,7 @@ export default class MenuScreenComponent extends Component {
 	componentDidMount() {
 		this.getProfile();
 		this.getHighscore();
-		// this.getAvatar();
+		this.getAvatar();
 	}
 
 	async getProfile() {
@@ -41,9 +67,15 @@ export default class MenuScreenComponent extends Component {
 	//Or hardcode all values and match with what the AsyncStorage item is
 	async getAvatar() {
 		var img = await AsyncStorage.getItem('Avatar');
-		this.setState({
-			profileImage: img
-		});
+
+		for (var i in this.state.images) {
+			var object = this.state.images[i];
+			if (object.key == img) {
+				this.setState({
+					profileImage: eval(object.value)
+				});
+			}
+		}
 	}
 
     static navigationOptions = {

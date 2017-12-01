@@ -17,17 +17,47 @@ export default class ProfileScreenComponent extends Component {
 	constructor () {
 	    super();
 	    this.state = {
-	      animationType: 'ALL',
-	      profileImage: require('../img/profile.png'),
-	      profileScore: "",
-	      profileName: "",
+			images: [
+				{
+					key: "profile",
+					value: require('../img/profile.png')
+				},
+				{
+					key: 'ninja',
+					value: require('../img/ninja1.png')
+				},
+				{
+					key: 'guy',
+					value: require('../img/guy.png')
+				},
+				{
+					key: 'ironman',
+					value: require('../img/ironman1.png')
+				},
+				{
+					key: 'hulk',
+					value: require('../img/hulk1.png')
+				},
+				{
+					key: 'morty',
+					value: require('../img/morty1.png')
+				},
+				{
+					key: 'rick',
+					value: require('../img/rick1.png')
+				}
+			],
+	     	animationType: 'ALL',
+	    	profileImage: require('../img/profile.png'),
+	    	profileScore: "",
+	    	profileName: "",
 	    };
 	 }
 
 	componentDidMount() {
 		this.getProfile();
 		this.getHighscore();
-		// this.getAvatar();
+		this.getAvatar();
 	}
 
 	async getProfile() {
@@ -46,9 +76,19 @@ export default class ProfileScreenComponent extends Component {
 
 	async getAvatar() {
 		var img = await AsyncStorage.getItem('Avatar');
-		this.setState({
-			profileImage: img
-		});
+
+		for (var i in this.state.images) {
+			var object = this.state.images[i];
+			if (object.key == img) {
+				this.setState({
+					profileImage: object.value
+				});
+			} else {
+				continue;
+			}
+		}
+
+		console.log(this.state.profileImage);
 	}
 
 	async setAvatar(value) {
