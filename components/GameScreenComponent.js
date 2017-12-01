@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, StyleSheet, Alert } from 'react-native';
+import { Text, View, StyleSheet, Alert, AsyncStorage } from 'react-native';
+import { NavigationAction, NavigationActions } from 'react-navigation';
 import { Button } from 'react-native-elements';
+import { Menu } from './MenuScreenComponent';
 
 export default class GameScreenComponent extends Component {
 
@@ -16,6 +18,14 @@ export default class GameScreenComponent extends Component {
     static navigationOptions = {
         title: 'Quit to Main Menu',
     };
+
+    async _setHighscore(score) {
+        var profile = await AsyncStorage.getItem("Profile");
+		var string = await AsyncStorage.getItem(profile);
+		var split_string = string.split(" ");
+        await AsyncStorage.setItem(profile, score + " " + split_string[1]);
+        await AsyncStorage.setItem("Highscore", score.toString());
+    }
 
     _updateTimer() {
         setInterval(() => {
@@ -47,18 +57,41 @@ export default class GameScreenComponent extends Component {
         this.props.navigation.goBack();
     }
 
+    displayAlert(message, score) {
+        Alert.alert(
+            "Time's Up!",
+            message + score,
+            [
+                {text: 'Play Again!', onPress: () => this._playAgain()},
+                {text: 'Main Menu', onPress: () => {
+                    const navigateAction = NavigationActions.navigate({
+                        routeName: 'Menu',
+                        params: {}
+                    });
+
+                    this.props.navigation.dispatch(navigateAction);
+                }},
+            ],
+            { cancelable: false }
+        )
+    }
+
     _showScore() {
         if (this.state.currentTime == 0) {
-            setTimeout(() => {
-                Alert.alert(
-                    'Time\'s Up!',
-                    'Score: ' + this.state.currentScore,
-                    [
-                      {text: 'Play Again!', onPress: () => this._playAgain()},
-                      {text: 'Main Menu', onPress: () => this._backToMenu()},
-                    ],
-                    { cancelable: false }
-                )
+            setTimeout(async () => {
+                var newScore = this.state.currentScore;
+                var profile = await AsyncStorage.getItem("Profile");
+                var string = await AsyncStorage.getItem(profile);
+                var split_string = string.split(" ");
+        
+                if (newScore > parseInt(split_string[0])) {
+                    this._setHighscore(newScore);
+                    this.displayAlert('WOW! You set a new highscore!\r\nScore: ', newScore);
+                } else if (parseInt(split_string[0]) == newScore) {
+                    this.displayAlert('Congradulations! You tied your highscore!\r\nScore: ', newScore);
+                } else {
+                    this.displayAlert('Great Job!\r\nScore: ', newScore);
+                }
             }, 500);
         }
     }
@@ -68,6 +101,7 @@ export default class GameScreenComponent extends Component {
     }
 
     render() {
+		const {navigate} = this.props.navigation;
         return (
             <View style={styles.container}>
 

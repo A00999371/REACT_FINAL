@@ -14,6 +14,17 @@ export default class LoginScreenComponent extends Component {
         this.createProfile = this.createProfile.bind(this);
     }
 
+    async componentDidMount() {
+        if (await AsyncStorage.getItem("Profile") != null) {
+            const navigateAction = NavigationActions.navigate({
+                routeName: 'Menu',
+                params: {}
+            });
+
+            this.props.navigation.dispatch(navigateAction);
+        }
+    }
+
     static navigationOptions = {
         title: 'Mind Games',
     };
@@ -22,7 +33,7 @@ export default class LoginScreenComponent extends Component {
     async createProfile(text) {
         try {
             //Create an AsyncStorage item with a default value and key of what the user entered
-            await AsyncStorage.setItem(text, "0 ../img/profile.png");
+            await AsyncStorage.setItem(text, "0 profile");
             console.log("Created profile: " + text);
         } catch (error) {
             //Error saving data
@@ -32,7 +43,7 @@ export default class LoginScreenComponent extends Component {
             'Congratulations!',
             'Profile Created',
             [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'OK'},
             ],
             { cancelable: false }
         )
@@ -87,6 +98,7 @@ export default class LoginScreenComponent extends Component {
                     onChangeText={(text) => this.setState({text})}
                     value={this.state.text} 
                     placeholder="Enter Profile Name"
+                    onSubmitEditing={() => this.checkProfile(this.state.text)}
                 />
 
                 <Text style={styles.te}>By: MARKSMEN Games</Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
 import LoginScreenComponent from './components/LoginScreenComponent';
@@ -28,12 +28,20 @@ const SimpleApp = StackNavigator({
   Score: {
     screen: ScoreScreenComponent
   }
+}, {
+  headerMode: 'none',
+  gesturesEnabled: false,
 });
 
 export default class App extends React.Component {
+  
+  constructor(props) {
+    super(props);
+  }
+  
   render() {
     return (
-      <SimpleApp/> 
+      <SimpleApp style={{marginTop: 10}}/> 
     );
   }
 }
