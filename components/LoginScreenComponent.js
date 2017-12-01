@@ -32,7 +32,7 @@ export default class LoginScreenComponent extends Component {
             'Congratulations!',
             'Profile Created',
             [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'OK'},
             ],
             { cancelable: false }
         )

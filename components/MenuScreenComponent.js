@@ -7,9 +7,13 @@ export default class MenuScreenComponent extends Component {
     constructor () {
         super();
         this.state = {
-          profileImage: require('../img/profile.png'),
-          profileScore: "",
-          profileName: "",
+			images: [
+				require('../img/profile.png'),
+				require('../img/ninja1.png')
+			],
+        	profileImage: require('../img/profile.png'),
+        	profileScore: "",
+        	profileName: "",
         };
 	 }
 	 
@@ -48,7 +52,7 @@ export default class MenuScreenComponent extends Component {
 
     //TODO updateable pofile tab from file info
     render() {
-    	const {navigate} = this.props.navigation;
+		const {navigate} = this.props.navigation;
         return (
             <View>
             	<Text>MAIN MENU</Text>

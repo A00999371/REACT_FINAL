@@ -24,7 +24,7 @@ export default class ProfileScreenComponent extends Component {
 	    };
 	 }
 
-	 componentDidMount() {
+	componentDidMount() {
 		this.getProfile();
 		this.getHighscore();
 		// this.getAvatar();
@@ -51,7 +51,18 @@ export default class ProfileScreenComponent extends Component {
 		});
 	}
 
+	async setAvatar(value) {
+		var profile = await AsyncStorage.getItem("Profile");
+		var string = await AsyncStorage.getItem(profile);
+		var split_string = string.split(" ");
+
+		await AsyncStorage.setItem(profile, split_string[0] + " " + value);
+		console.log("This is the new avatar: " + await AsyncStorage.getItem(profile));
+	}
+
 	changeLogo(newImage) {
+		this.setAvatar(newImage);
+
 	    this.setState({
 	    	profileImage: newImage
 	    });
@@ -59,17 +70,17 @@ export default class ProfileScreenComponent extends Component {
 
     updateProfileImage() {
     	Alert.alert(
-		  'Congratulations!',
-		  'Image Saved to Profile',
-		  [
-		    {text: 'OK', onPress: () => console.log('OK Pressed')},
-		  ],
-		  { cancelable: false }
+			'Congratulations!',
+			'Image Saved to Profile',
+			[
+			{text: 'OK', onPress: () => console.log('OK Pressed')},
+			],
+			{ cancelable: false }
 		)
     }
 
     static navigationOptions = {
-        title: 'Back to Main Menu',
+    	title: 'Back to Main Menu',
     };
 
     //TODO buttons and functions to update the local file and pofile tab with the selected avatar
@@ -93,7 +104,7 @@ export default class ProfileScreenComponent extends Component {
             	<View>
             		<Text>AVATAR IMAGES</Text>
             	</View>
-            	{/*Having more than 4 sprites causes loading issues*/}
+            	{/* Having more than 4 sprites causes loading issues */}
             	{/*<Image
         			style={{width: 60, height: 60, top: 500, left:10}}
         			source={require('../img/guy.png')}
