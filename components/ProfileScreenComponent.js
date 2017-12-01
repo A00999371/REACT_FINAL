@@ -17,38 +17,8 @@ export default class ProfileScreenComponent extends Component {
 	constructor () {
 	    super();
 	    this.state = {
-			images: [
-				{
-					key: "profile",
-					value: require('../img/profile.png')
-				},
-				{
-					key: 'ninja',
-					value: require('../img/ninja1.png')
-				},
-				{
-					key: 'guy',
-					value: require('../img/guy.png')
-				},
-				{
-					key: 'ironman',
-					value: require('../img/ironman1.png')
-				},
-				{
-					key: 'hulk',
-					value: require('../img/hulk1.png')
-				},
-				{
-					key: 'morty',
-					value: require('../img/morty1.png')
-				},
-				{
-					key: 'rick',
-					value: require('../img/rick1.png')
-				}
-			],
 	     	animationType: 'ALL',
-	    	profileImage: require('../img/profile.png'),
+	    	profileImage: [],
 	    	profileScore: "",
 	    	profileName: "",
 	    };
@@ -76,19 +46,26 @@ export default class ProfileScreenComponent extends Component {
 
 	async getAvatar() {
 		var img = await AsyncStorage.getItem('Avatar');
+		var l = [];
 
-		for (var i in this.state.images) {
-			var object = this.state.images[i];
-			if (object.key == img) {
-				this.setState({
-					profileImage: object.value
-				});
-			} else {
-				continue;
-			}
+		if (img == 'profile') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/profile.png')} key={'profile'}/>);
+		} else if (img == 'ninja') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/ninja1.png')} key={'ninja'}/>);			
+		} else if (img == 'hulk') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/hulk1.png')} key={'hulk'}/>);			
+		} else if (img == 'morty') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/morty1.png')} key={'morty'}/>);
+		} else if (img == 'rick') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/rick1.png')} key={'rick'}/>);			
+		} else if (img == 'ironman') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/ironman1.png')} key={'ironman'}/>);			
+		} else {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/guy.png')} key={'guy'}/>);			
 		}
-
-		console.log(this.state.profileImage);
+		this.setState({
+			profileImage: l
+		});
 	}
 
 	async setAvatar(value) {
@@ -97,15 +74,31 @@ export default class ProfileScreenComponent extends Component {
 		var split_string = string.split(" ");
 
 		await AsyncStorage.setItem(profile, split_string[0] + " " + value);
-		console.log("This is the new avatar: " + await AsyncStorage.getItem(profile));
 	}
 
-	changeLogo(newImage) {
-		this.setAvatar(newImage);
+	changeLogo(img) {
+		this.setAvatar(img);
 
-	    this.setState({
-	    	profileImage: newImage
-	    });
+	    var l = [];
+		
+		if (img == 'profile') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/profile.png')} key={'profile'}/>);
+		} else if (img == 'ninja') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/ninja1.png')} key={'ninja'}/>);			
+		} else if (img == 'hulk') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/hulk1.png')} key={'hulk'}/>);			
+		} else if (img == 'morty') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/morty1.png')} key={'morty'}/>);
+		} else if (img == 'rick') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/rick1.png')} key={'rick'}/>);			
+		} else if (img == 'ironman') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/ironman1.png')} key={'ironman'}/>);			
+		} else {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/guy.png')} key={'guy'}/>);			
+		}
+		this.setState({
+			profileImage: l
+		});
     }
 
     updateProfileImage() {
@@ -131,10 +124,7 @@ export default class ProfileScreenComponent extends Component {
             	<View>
             		<Text>Profile Name: {this.state.profileName}</Text>
             		<Text>Highscore: {this.state.profileScore} points</Text>
-            		<Image
-            			style={{width: 80, height: 80}}
-            			source={this.state.profileImage}
-        			/>
+            		{this.state.profileImage}
             	</View>
             	<Button
             		//TODO add onPress function that takes the selected image and saves it into profile data so it shows up in the menu screen
@@ -187,7 +177,7 @@ export default class ProfileScreenComponent extends Component {
 		        	fps={8}
 		        	//onPress={() => {this.onPress();}}
 		        />*/}
-		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/ironman1.png'))} position='absolute' style={{top: 10, left:10}}>
+		        <TouchableHighlight onPress={() => this.changeLogo('ironman')} position='absolute' style={{top: 10, left:10}}>
 					<Image
 				    	style={{width: 80, height: 80}}
 	        			source={require('../img/ironman1.png')}
@@ -210,7 +200,7 @@ export default class ProfileScreenComponent extends Component {
 		        	fps={3}
 		        	//onPress={() => {this.onPress();}}
 		        />
-		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/hulk1.png'))} position='absolute' style={{top: 20, left:10}}>
+		        <TouchableHighlight onPress={() => this.changeLogo('hulk')} position='absolute' style={{top: 20, left:10}}>
 					<Image
 				    	style={{width: 80, height: 80}}
 	        			source={require('../img/hulk1.png')}
@@ -234,7 +224,7 @@ export default class ProfileScreenComponent extends Component {
 		        	fps={3}
 		        	//onPress={() => {this.onPress();}}
 		        />
-		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/rick1.png'))} position='absolute' style={{top: 20, left:10}}>
+		        <TouchableHighlight onPress={() => this.changeLogo('rick')} position='absolute' style={{top: 20, left:10}}>
 					<Image
 				    	style={{width: 69, height: 80}}
 	        			source={require('../img/rick1.png')}
@@ -258,7 +248,7 @@ export default class ProfileScreenComponent extends Component {
 		        	fps={5}
 		        	//onPress={() => {this.onPress();}}
 		        />
-		        <TouchableHighlight onPress={() => this.changeLogo(require('../img/morty1.png'))} position= 'absolute' style={{top: 30, left:20}}>
+		        <TouchableHighlight onPress={() => this.changeLogo('morty')} position= 'absolute' style={{top: 30, left:20}}>
 					<Image
 				    	style={{width: 52, height: 80}}
 	        			source={require('../img/morty1.png')}

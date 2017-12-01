@@ -7,40 +7,11 @@ export default class MenuScreenComponent extends Component {
     constructor () {
         super();
         this.state = {
-			images: [
-				{
-					key: "profile",
-					value: require('../img/profile.png')
-				},
-				{
-					key: 'ninja',
-					value: require('../img/ninja1.png')
-				},
-				{
-					key: 'guy',
-					value: '../img/guy.png'
-				},
-				{
-					key: 'ironman',
-					value: require('../img/ironman1.png')
-				},
-				{
-					key: 'hulk',
-					value: require('../img/hulk1.png')
-				},
-				{
-					key: 'morty',
-					value: require('../img/morty1.png')
-				},
-				{
-					key: 'rick',
-					value: require('../img/rick1.png')
-				}
-			],
-        	profileImage: "",
+        	profileImage: [],
         	profileScore: "",
         	profileName: "",
-        };
+		};
+		this.getAvatar = this.getAvatar.bind(this);
 	 }
 	 
 	componentDidMount() {
@@ -67,15 +38,26 @@ export default class MenuScreenComponent extends Component {
 	//Or hardcode all values and match with what the AsyncStorage item is
 	async getAvatar() {
 		var img = await AsyncStorage.getItem('Avatar');
+		var l = [];
 
-		for (var i in this.state.images) {
-			var object = this.state.images[i];
-			if (object.key == img) {
-				this.setState({
-					profileImage: eval(object.value)
-				});
-			}
+		if (img == 'profile') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/profile.png')} key={'profile'}/>);
+		} else if (img == 'ninja') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/ninja1.png')} key={'ninja'}/>);			
+		} else if (img == 'hulk') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/hulk1.png')} key={'hulk'}/>);			
+		} else if (img == 'morty') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/morty1.png')} key={'morty'}/>);
+		} else if (img == 'rick') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/rick1.png')} key={'rick'}/>);			
+		} else if (img == 'ironman') {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/ironman1.png')} key={'ironman'}/>);			
+		} else {
+			l.push(<Image style={{width: 80, height: 80}} source={require('../img/guy.png')} key={'guy'}/>);			
 		}
+		this.setState({
+			profileImage: l
+		});
 	}
 
     static navigationOptions = {
@@ -91,10 +73,7 @@ export default class MenuScreenComponent extends Component {
             	<View>
             		<Text>Profile Name: {this.state.profileName}</Text>
             		<Text>Highscore: {this.state.profileScore} points</Text>
-            		<Image
-            			style={{width: 80, height: 80}}
-            			source={this.state.profileImage}
-        			/>
+            		{this.state.profileImage}
             	</View>
             	<Button
 	            onPress={() => navigate('Game')}
