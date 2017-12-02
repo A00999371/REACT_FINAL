@@ -1,19 +1,5 @@
 {
   "expo": {
-    "name": "REACT_FINAL",
-    "description": "An empty new project",
-    "slug": "REACT_FINAL",
-    "privacy": "public",
-    "sdkVersion": "22.1.0",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "primaryColor": "#cccccc",
-    "packagerOpts": {
-      "assetExts": ["ttf", "mp4"]
-    },
-    "ios": {
-      "supportsTablet": true
-    }
+    "sdkVersion": "22.0.0"
   }
 }
-
