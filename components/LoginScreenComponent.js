@@ -29,7 +29,7 @@ export default class LoginScreenComponent extends Component {
         title: 'Mind Games',
     };
 
-    //Create an AsyncStorage profile and assign a default value for the highscore and avatar
+    //Create an AsyncStorage profile and assign a default value for the highscore and avatar lit
     async createProfile(text) {
         try {
             //Create an AsyncStorage item with a default value and key of what the user entered
