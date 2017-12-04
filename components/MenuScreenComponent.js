@@ -15,12 +15,14 @@ export default class MenuScreenComponent extends Component {
 		this.getAvatar = this.getAvatar.bind(this);
 	 }
 	 
+	//When the user enters this page, get the users current highscore, profile, and avatar
 	componentDidMount() {
 		this.getProfile();
 		this.getHighscore();
 		this.getAvatar();
 	}
 
+	//Get the users AsyncStorage profile name
 	async getProfile() {
 		var profile = await AsyncStorage.getItem('Profile');
 		this.setState({
@@ -28,6 +30,7 @@ export default class MenuScreenComponent extends Component {
 		});
 	}
 
+	//Get the users AsyncStorage highscore, which is their current highscore
 	async getHighscore() {
 		var score = await AsyncStorage.getItem('Highscore');
 		this.setState({
@@ -35,12 +38,12 @@ export default class MenuScreenComponent extends Component {
 		});
 	}
 
-	//TODO figure out how to make require work dynamically
-	//Or hardcode all values and match with what the AsyncStorage item is
+	//Get the users AsyncStorage avatar, which is their current avatar
 	async getAvatar() {
 		var img = await AsyncStorage.getItem('Avatar');
 		var l = [];
 
+		//If the users avatar equals any of the names below, then put an image element into the l array
 		if (img == 'profile') {
 			l.push(<Image style={{width: 199, height: 200}} source={require('../img/profile.png')} key={'profile'}/>);
 		} else if (img == 'ninja') {
@@ -56,11 +59,14 @@ export default class MenuScreenComponent extends Component {
 		} else {
 			l.push(<Image style={{width: 200, height: 200}} source={require('../img/guy.png')} key={'guy'}/>);			
 		}
+
+		//Once the users profile image has been found, set the profileImage state to equal the l array
 		this.setState({
 			profileImage: l
 		});
 	}
 
+	//Changes the highscore state value to equal the value variable
 	changeHighscore(value) {
 		this.setState({
 			profileScore: value
@@ -71,7 +77,6 @@ export default class MenuScreenComponent extends Component {
         tabBarLabel: 'Back to Login',
 	};
 
-    //TODO updateable pofile tab from file info
     render() {
 		const {navigate} = this.props.navigation;
 		Keyboard.dismiss();

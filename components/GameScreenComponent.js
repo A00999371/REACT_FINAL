@@ -20,10 +20,20 @@ export default class GameScreenComponent extends Component {
         title: 'Quit to Main Menu',
     };
 
+    //Sets the highscore to the score variable
     async _setHighscore(score) {
+        //Get the profile the current user is using
         var profile = await AsyncStorage.getItem("Profile");
-		var string = await AsyncStorage.getItem(profile);
-		var split_string = string.split(" ");
+
+        //Get what their current highscore and avatar are by getItem and the profile variable
+        var string = await AsyncStorage.getItem(profile);
+        
+        //Differentiate the highscore and avatar by splitting the variable string by spaces
+        var split_string = string.split(" ");
+        
+        //Once the highscore and avatar strings have been split up, set the current users highscore to the score variable
+        //Score will always be split_string[0] and split_string[1] will always be avatar
+        //After that, set the highscore AsyncStorage variable to score
         await AsyncStorage.setItem(profile, score + " " + split_string[1]);
         await AsyncStorage.setItem("Highscore", score.toString());
     }
@@ -51,46 +61,42 @@ export default class GameScreenComponent extends Component {
         }
     }
 
+    //Get a random integer for moving the tap button around on the screen
+    //This integer has to be within the max and min values
     _getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
+
+    //Move the tap button around on the screen between certain values
     _move() {
-
+        //
         setInterval(() => {
-
             if (!this.state.currentTime == 0) {
                 let coordY = this._getRandomInt(-50, 200);
                 let coordX = this._getRandomInt(-100, 100);
                 this.refs.view.transitionTo({left: coordX}, 200);
                 this.refs.view.transitionTo({top: coordY}, 200);
             }
-
         }, 750);
-
     }
 
-    // Play again function, after a game finishes
+    //Restarts game once user presses option Play Again
     _playAgain() {
-
         this.setState({
             currentTime: 15,
             currentScore: 0
         });
-
         this.render();
-
     }
 
     // Take player back to main menu
     _backToMenu() {
-
         const navigateAction = NavigationActions.navigate({
             routeName: 'Menu',
             params: {}
         });
 
         this.props.navigation.dispatch(navigateAction);
-        
     }
 
     // display options when game finishes, with parameters passed
@@ -108,19 +114,36 @@ export default class GameScreenComponent extends Component {
         )
     }
 
+    //After the game finishes, run this function
     _showScore() {
+        //If the currentTime left of the game is 0
         if (this.state.currentTime == 0) {
             setTimeout(async () => {
+                //Set the variable newScore to equal what the users score was
                 var newScore = this.state.currentScore;
+
+                //Get the users current highscore
                 var profile = await AsyncStorage.getItem("Profile");
                 var string = await AsyncStorage.getItem(profile);
                 var split_string = string.split(" ");
         
+                //If the users current score is higher than their highscore, 
+                //then set their highscore to their current score and tell the user that they set a new highscore
                 if (newScore > parseInt(split_string[0])) {
+                    //Calls function setHighscore to set the highscore
+                    //Passes through the variable newScore
                     this._setHighscore(newScore);
+
+                    //Send the user an alert saying they set a new highscore and tell them what their score was
                     this.displayAlert('WOW! You set a new highscore!\r\nScore: ', newScore);
+                
+                //If the users current score is the same as their highscore,
+                //then tell the user that they matched their current highscore and show the user their score
                 } else if (parseInt(split_string[0]) == newScore) {
                     this.displayAlert('Congradulations! You tied your highscore!\r\nScore: ', newScore);
+                
+                //If the users current score is less than their highscore,
+                //then tell the user they did a good job and show the user their score
                 } else {
                     this.displayAlert('Great Job!\r\nScore: ', newScore);
                 }
@@ -128,6 +151,7 @@ export default class GameScreenComponent extends Component {
         }
     }
 
+    //Run updateTimer and move function whenever the user enters the page
     componentDidMount() {
         this._updateTimer();
         this._move();

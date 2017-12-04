@@ -25,12 +25,14 @@ export default class ProfileScreenComponent extends Component {
 	    };
 	 }
 
+	//When the user enters this page, get the users current highscore, profile, and avatar
 	componentDidMount() {
 		this.getProfile();
 		this.getHighscore();
 		this.getAvatar();
 	}
 
+	//Get the users current profile name
 	async getProfile() {
 		var profile = await AsyncStorage.getItem('Profile');
 		this.setState({
@@ -38,6 +40,7 @@ export default class ProfileScreenComponent extends Component {
 		});
 	}
 
+	//Get the users current highscore
 	async getHighscore() {
 		var score = await AsyncStorage.getItem('Highscore');
 		this.setState({
@@ -45,10 +48,13 @@ export default class ProfileScreenComponent extends Component {
 		});
 	}
 
+	//Get the users current avatar
 	async getAvatar() {
 		var img = await AsyncStorage.getItem('Avatar');
 		var l = [];
 
+		//See if the users avatar value matches any value below
+		//Once a matching pair is found, put an image element containing the profile image into the l array
 		if (img == 'profile') {
 			l.push(<Image style={{width: 80, height: 80}} source={require('../img/profile.png')} key={'profile'}/>);
 		} else if (img == 'ninja') {
@@ -64,25 +70,31 @@ export default class ProfileScreenComponent extends Component {
 		} else {
 			l.push(<Image style={{width: 80, height: 80}} source={require('../img/guy.png')} key={'guy'}/>);			
 		}
+
+		//Set the state of the profileImage to equal the l array containing the users profile image
 		this.setState({
 			profileImage: l
 		});
 	}
 
+	//Change the avatar value to be equal to the value variable
 	async setAvatar(value) {
+		//Get the users profile name and destinguish what the highscore and avatar values are
 		var profile = await AsyncStorage.getItem("Profile");
 		var string = await AsyncStorage.getItem(profile);
 		var split_string = string.split(" ");
 
+		//Set the users current avatar to equal that of the avatar that they chose
 		await AsyncStorage.setItem(profile, split_string[0] + " " + value);
 		await AsyncStorage.setItem("Avatar", value);
 	}
 
+	//Change the avatar image to equal that of the image that they chose
 	changeLogo(img) {
 		this.setAvatar(img);
-
 	    var l = [];
 		
+		//Match the value they chose with one of the following, then set an image element to the image and append it to l array
 		if (img == 'profile') {
 			l.push(<Image style={{width: 80, height: 80}} source={require('../img/profile.png')} key={'profile'}/>);
 		} else if (img == 'ninja') {
@@ -98,6 +110,8 @@ export default class ProfileScreenComponent extends Component {
 		} else {
 			l.push(<Image style={{width: 80, height: 80}} source={require('../img/guy.png')} key={'guy'}/>);			
 		}
+
+		//set l array as the profileImage state
 		this.setState({
 			profileImage: l
 		});
@@ -107,7 +121,6 @@ export default class ProfileScreenComponent extends Component {
 		title: 'Back to Main Menu',
 	};
 
-    //TODO buttons and functions to update the local file and pofile tab with the selected avatar
     render() {
         return (
             <View style={styles.container}>

@@ -16,33 +16,45 @@ export default class ScoreScreenComponent extends Component {
         this.createHighscoreDict = this.createHighscoreDict.bind(this);
     }
 
+    //Once the user gets to this page, display their highscore and everyone elses highscores
     componentDidMount() {
         this.getProfile();
         this.createHighscoreDict();
     }
 
+    //Get the users current highscore and set the you state to equal their highscore
     async getProfile() {
         var profile = await AsyncStorage.getItem("Profile");
         var string = await AsyncStorage.getItem(profile);
         var string_split = string.split(" ");
+
         this.setState({
             you: profile + ": " + string_split[0]
         });
     }
 
+    //Create a dictionary containing all user profiles
     async createHighscoreDict() {
+        //Get all profiles
         var allProfiles = await AsyncStorage.getAllKeys();
         var dict = [];
         console.log("These are allProfiles: " + allProfiles);
 
+        //For each profile in the allProfiles array,
+        //put the profile along with their highscore into the dictionary
         for (var i in allProfiles) {
             var profile = allProfiles[i];
 
+            //If the profile is highscore, avatar, profile, or the users current profile, then do nothing
             if (profile == 'Highscore' || profile == "Avatar" || profile == "Profile" || profile == await AsyncStorage.getItem("Profile")) {
                 continue;
             } else {
+                //Get the profiles highscore
                 var score = await AsyncStorage.getItem(profile);
                 var score_list = score.split(" ");
+
+                //Put the users highscore along with their profile name into the dictionary
+                //Set the value as highscore and key as profile name
                 dict.push({
                     value: score_list[0],
                     key: profile
@@ -53,15 +65,22 @@ export default class ScoreScreenComponent extends Component {
         this._getHighscores(dict);
     }
 
+    //This function sorts the dictionary by highscore, then sets the list state as the sorted list of highscores
     async _getHighscores(dict) {
         var l = [];
+
+        //Use lodash.sortBy to create a sorted dictionary
+        //This dictionary should be sorted by highscore
         dict = sortBy(dict, 'value');
+
+        //Loop through the dictionary and add an element for the user containing their highscore and profile name to the l array
         for (var i = dict.length-1; i >= 0; i--) {
             var profile = dict[i].key;
             var score = dict[i].value;
             l.push(<View key={profile}><Text style={styles.listText}>{profile}: {score}</Text></View>);
         }
 
+        //Set the list state to equal the array of elements containing username and highscore
         this.setState({
             list: l
         });
@@ -71,7 +90,6 @@ export default class ScoreScreenComponent extends Component {
         title: 'Back to Main Menu',
     };
 
-    //TODO make the list update by the saved score information
     render() {
         return (
             <View style={styles.container}>
