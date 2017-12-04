@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, Button, AsyncStorage } from 'react-native';
+import { Text, View, AsyncStorage, StyleSheet } from 'react-native';
+import { Button, List, ListItem } from 'react-native-elements';
 import { NavigationAction, NavigationActions } from 'react-navigation';
 const sortBy = require('lodash.sortby');
 
@@ -58,8 +59,9 @@ export default class ScoreScreenComponent extends Component {
         for (var i = dict.length-1; i >= 0; i--) {
             var profile = dict[i].key;
             var score = dict[i].value;
-            l.push(<View key={profile}><Text>{profile}: {score}</Text></View>);
+            l.push(<View key={profile}><Text style={styles.listText}>{profile}: {score}</Text></View>);
         }
+
         this.setState({
             list: l
         });
@@ -72,27 +74,85 @@ export default class ScoreScreenComponent extends Component {
     //TODO make the list update by the saved score information
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <Button
                     onPress={() => {
-                        const navigateAction = NavigationActions.navigate({
-                            routeName: 'Menu',
-                            params: {}
-                        });
-        
-                        this.props.navigation.dispatch(navigateAction);
+                        this.props.navigation.goBack();
                     }}
                     title="Go back home"
-                    style={{position: 'absolute', bottom: 0}}
+                    buttonStyle={styles.button}
+                    textStyle={styles.buttonText}
                 />
-                <Text>Highscore</Text>
-                <Text style={{marginBottom: 10, marginTop: 10}}>
-                YOU{"\n"}
+                <Text style={styles.text1}>Highscores</Text>
+                <Text style={styles.text2}>YOU</Text>
+                <Text style={styles.text3}>
                 {this.state.you}
                 </Text>
 
-                {this.state.list}
+                <List containerStyle={styles.listContainer}>
+                    {this.state.list}
+                </List>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'rgb(50,50,50)',
+        alignItems: 'center',
+    },
+    button: {
+        position: 'relative',
+        top: 25,
+        width: 300,
+        height: 50,
+		backgroundColor: 'rgb(100,100,100)'
+    },
+    buttonText: {
+		fontFamily: 'sans-serif-medium',
+		fontSize: 20,
+		color: 'white'
+	},
+    text1: {
+        position: 'relative',
+        top: 45,
+		fontFamily: 'sans-serif-medium',
+		fontSize: 25,
+		color: 'orange',
+        backgroundColor: 'transparent'
+    },
+    text2: {
+        position: 'relative',
+        selfAlign: 'center',
+        top: 65,
+		fontFamily: 'sans-serif-condensed',
+		fontSize: 20,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    text3: {
+        position: 'relative',
+        top: 65,
+		fontFamily: 'sans-serif-condensed',
+		fontSize: 30,
+        color: 'rgb(150,150,150)',
+        backgroundColor: 'transparent'
+    },
+    listContainer: {
+        position: 'relative',
+        top: 75,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
+    listText: {
+        textAlign: 'center',
+        top: 15,
+        marginBottom: 5,
+        fontFamily: 'sans-serif-condensed',
+        fontSize: 17,
+        color: 'rgb(175,175,175)',
+		backgroundColor: 'transparent'
+    }
+});

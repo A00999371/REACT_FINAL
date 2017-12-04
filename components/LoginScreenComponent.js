@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes, { func } from 'prop-types';
-import { Text, View, Button, TextInput, AsyncStorage, Alert, StyleSheet } from 'react-native';
+import { Text, View, Image, TextInput, AsyncStorage, Alert, StyleSheet } from 'react-native';
 import { NavigationAction, NavigationActions } from 'react-navigation';
+import { Button } from 'react-native-elements';
 
 export default class LoginScreenComponent extends Component {
 
     constructor() {
         super();
         this.state = {
-            text: ''
+            text: '',
+            inputFocus: false
         }
         this.checkProfile = this.checkProfile.bind(this);
         this.createProfile = this.createProfile.bind(this);
@@ -31,22 +33,33 @@ export default class LoginScreenComponent extends Component {
 
     //Create an AsyncStorage profile and assign a default value for the highscore and avatar lit
     async createProfile(text) {
-        try {
-            //Create an AsyncStorage item with a default value and key of what the user entered
-            await AsyncStorage.setItem(text, "0 profile");
-            console.log("Created profile: " + text);
-        } catch (error) {
-            //Error saving data
-            console.log(error.message);
+        if(!text == "") {
+            try {
+                //Create an AsyncStorage item with a default value and key of what the user entered
+                await AsyncStorage.setItem(text, "0 profile");
+                console.log("Created profile: " + text);
+            } catch (error) {
+                //Error saving data
+                console.log(error.message);
+            }
+            Alert.alert(
+                'Congratulations!',
+                'Profile Created.',
+                [
+                    {text: 'OK'},
+                ],
+                { cancelable: false }
+            )
+        } else {
+            Alert.alert(
+                'Error!',
+                'Text field is empty.',
+                [
+                    {text: 'OK'},
+                ],
+                { cancelable: false }
+            )
         }
-        Alert.alert(
-            'Congratulations!',
-            'Profile Created',
-            [
-            {text: 'OK'},
-            ],
-            { cancelable: false }
-        )
     }
 
     //See if the AsyncStorage profile exists, and if it does, use that as the login profile
@@ -78,52 +91,127 @@ export default class LoginScreenComponent extends Component {
         }
     }
 
+    _onFocus() {
+        this.setState({
+            inputFocus: true
+        });
+    }
+    
+    _onBlur() {
+        this.setState({
+            inputFocus: false
+        });
+    }
+
     render() {
         return (
-            <View style={{flex: 1, alignContent: 'center', justifyContent: 'flex-start'}}>
-                <Button
-                    onPress={() => this.checkProfile(this.state.text)}
-                    title="Login"
-                    style={styles.but}
-                />
+            <View style={styles.container}>
+                <View style={styles.container2}>
+                    <Button
+                        onPress={() => this.checkProfile(this.state.text)}
+                        title="Login"
+                        buttonStyle={styles.loginButton}
+                        textStyle={styles.buttonText}
+                    />
 
-                <Button
-                    onPress={() => this.createProfile(this.state.text)}
-                    title="Create Profile"
-                    style={styles.but}
-                />
+                    <Button
+                        onPress={() => this.createProfile(this.state.text)}
+                        title="Create Profile"
+                        buttonStyle={styles.createButton}
+                        textStyle={styles.buttonText}
+                    />
 
-                <TextInput
-                    style={styles.inp}
-                    onChangeText={(text) => this.setState({text})}
-                    value={this.state.text} 
-                    placeholder="Enter Profile Name"
-                    onSubmitEditing={() => this.checkProfile(this.state.text)}
-                />
+                    <TextInput
+                        onFocus={() => this._onFocus()}
+                        onBlur={() => this._onBlur()}
+                        style={[styles.input,
+                            this.state.inputFocus == true?
+                            {width: 350, borderColor: 'black', backgroundColor: '#ffeccc'}:
+                            {width: 300, borderColor: 'orange', backgroundColor: '#f7eede'}]}
+                        onChangeText={(text) => this.setState({text})}
+                        value={this.state.text} 
+                        placeholder="Enter Profile Name"
+                        placeholderTextColor="dimgray"
+                        underlineColorAndroid="#f7eede"
+                        onSubmitEditing={() => this.checkProfile(this.state.text)}
+                    />
+                </View>
 
-                <Text style={styles.te}>By: MARKSMEN Games</Text>
+                <Image style={styles.image} source={require('../img/team.png')}/>
+                
+                <Text style={styles.text1}>MARKSMEN</Text>
+                <Text style={styles.text2}>Games</Text>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    but: {
-        height: 30,
-        alignSelf: 'stretch'
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        alignContent: 'center',
+        backgroundColor: 'white'
     },
-    te: {
-        fontSize: 10,
-        position: 'absolute',
-        bottom: 0,
+    container2:{
+        position: 'relative',
+        alignItems: 'center',
+        alignContent: 'center',
+        top: 60
+    },
+    loginButton: {
+        position: 'relative',
+        width: 300,
+        height: 75,
+        backgroundColor: 'orange',
+        borderRadius: 1,
+    },
+    createButton: {
+        position: 'relative',
+        top: 5,
+        width: 300,
+        height: 75,
+        backgroundColor: 'orange',
+        borderRadius: 1,
+    },
+    buttonText: {
+        fontFamily: 'sans-serif-light',
+        fontSize: 27.5,
+        color: 'black'
+    },
+    input: {
+        position: 'relative',
+        top: 50,
+        height: 75,
+        color: 'black',
         textAlign: 'center',
-        alignSelf: 'center'
+        fontFamily: 'sans-serif-condensed',
+        fontSize: 20,
+        borderWidth: 3,
+        // backgroundColor: '#f7eede'
     },
-    inp: {
-        marginTop: 150,
-        alignSelf: 'center',
-        width: 250,
-        height: 30,
-        textAlign: 'center'
-    }
+    image: {
+        position: 'absolute',
+        width: 358,
+        height: 287,
+        bottom: 0,
+    },
+    text1: {
+        position: 'absolute',
+        bottom: 32,
+        fontFamily: 'sans-serif-medium',
+        textAlign: 'center',
+        fontSize: 25,
+        color: 'orange',
+        backgroundColor: 'transparent'
+    },
+    text2: {
+        position: 'absolute',
+        bottom: 15,
+        fontFamily: 'sans-serif-condensed',
+        textAlign: 'center',
+        fontSize: 20,
+        color: 'white',
+        backgroundColor: 'transparent'
+    },
 });
