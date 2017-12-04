@@ -8,6 +8,7 @@ import ProfileScreenComponent from './components/ProfileScreenComponent'
 import GameScreenComponent from './components/GameScreenComponent'
 import ScoreScreenComponent from './components/ScoreScreenComponent'
 
+//Create a stack navigator without a title bar
 const SimpleApp = StackNavigator({
   Login : {
     screen : LoginScreenComponent

@@ -16,6 +16,9 @@ export default class LoginScreenComponent extends Component {
         this.createProfile = this.createProfile.bind(this);
     }
 
+    //When you get to the login page, see if the player has a profile or not
+    //If the user has a profile, then send them straight to home
+    //Otherwise, stay on login page
     async componentDidMount() {
         if (await AsyncStorage.getItem("Profile") != null) {
             const navigateAction = NavigationActions.navigate({
@@ -27,6 +30,7 @@ export default class LoginScreenComponent extends Component {
         }
     }
 
+    //Shows the navigation title as Mind games
     static navigationOptions = {
         title: 'Mind Games',
     };
@@ -42,6 +46,7 @@ export default class LoginScreenComponent extends Component {
                 //Error saving data
                 console.log(error.message);
             }
+            //Once profile has been created, send an alert saying that the users profile has been created
             Alert.alert(
                 'Congratulations!',
                 'Profile Created.',
@@ -50,6 +55,7 @@ export default class LoginScreenComponent extends Component {
                 ],
                 { cancelable: false }
             )
+        //If user tries to create a user with a blank name, then send an alert saying the user must enter some name for their user
         } else {
             Alert.alert(
                 'Error!',
@@ -75,6 +81,7 @@ export default class LoginScreenComponent extends Component {
                 await AsyncStorage.setItem("Avatar", words[1]);
                 await AsyncStorage.setItem("Profile", text);
 
+                //Once highscore, profile, and avatar asyncstorage items have been created, send the user to main menu via navigation action
                 const navigateAction = NavigationActions.navigate({
                     routeName: 'Menu',
                     params: {}
@@ -91,12 +98,14 @@ export default class LoginScreenComponent extends Component {
         }
     }
 
+    //Focus on input when you click on the input
     _onFocus() {
         this.setState({
             inputFocus: true
         });
     }
     
+    //Unfocusses input when you click away from the input
     _onBlur() {
         this.setState({
             inputFocus: false
